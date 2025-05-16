@@ -8,59 +8,196 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
   <title>Rock Paper Scissors</title>
   <style>
-    body
-    {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      background-color: black;
-      font-family: Roboto;
-      font-weight: 500;
-      font-size: 20px;
-    }
-    button
-    {
-      padding: 10px;
-      color: white;
-      background-color: black;
-      font-size: 12px;
-      border: none;
-    }
-    .Scorecard h2
-    {
-      display: inline;
-      font-size: 20px;
-      color: white;
-      background-color: black;
-      padding: 10px;
-    }
-    img
-    {
-      width: 100%;
-    }
-    .buttons button
-    {
-      width: 120px;
-      height: 120px;
-      border: 3px solid white;
-      padding: 20px;
-      border-radius: 60px;
-      margin-right: 20px;
-      cursor: pointer;
+    /* Base Styles */
+body {
+  margin: 0;
+  padding: 2rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #000;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
+  font-size: 1rem;
+  min-height: 100vh;
+}
 
-    }
-    #result img
-    {
-      width: 40px;
-    }
-    .bottom button{
-      background-color: rgb(136, 135, 135);
-    }
+/* Heading */
+h1 {
+  color: #fff;
+  font-size: 2.5rem;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+/* Button Defaults */
+button {
+  background-color: #000;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-family: 'Roboto', sans-serif;
+}
+
+/* Choices Container */
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+/* Choice Buttons */
+.buttons button {
+  width: 20vw;
+  max-width: 120px;
+  aspect-ratio: 1/1;
+  border: 3px solid #fff;
+  border-radius: 50%;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.buttons button img {
+  width: 80%;
+  height: auto;
+}
+
+/* Round Result Text */
+#Result {
+  display: inline-block;
+  font-size: 1.25rem;
+  color: #fff;
+  background-color: #000;
+  padding: 0.5rem 1rem;
+  margin-bottom: 1rem;
+}
+
+/* Result Display */
+#result {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  width: 90%;
+  max-width: 400px;
+  background-color: #000;
+  color: #fff;
+  font-size: 1rem;
+  padding: 1rem;
+  margin: 0 auto 2rem;
+}
+
+#result img {
+  width: 2.5rem;
+  height: auto;
+}
+
+/* Scorecard */
+.Scorecard {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.Scorecard h2 {
+  font-size: 1.25rem;
+  color: #fff;
+  background-color: #000;
+  padding: 0.5rem 1rem;
+  margin: 0;
+}
+
+/* Final Result Button */
+#Final {
+  font-size: 1rem;
+  color: #fff;
+  background-color: #000;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  cursor: pointer;
+  margin-bottom: 2rem;
+}
+
+/* Bottom Controls */
+.bottom {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.bottom button {
+  font-size: 1rem;
+  padding: 0.75rem 1.5rem;
+  background-color: rgb(136, 135, 135);
+  color: #fff;
+  border: none;
+}
+
+/* Responsive: Tablet */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2rem;
+  }
+  .buttons button {
+    width: 25vw;
+    max-width: 100px;
+  }
+  #Result {
+    font-size: 1.1rem;
+  }
+  #result {
+    font-size: 0.9rem;
+    padding: 0.75rem;
+  }
+  .Scorecard h2 {
+    font-size: 1.1rem;
+  }
+  #Final,
+  .bottom button {
+    font-size: 0.9rem;
+    padding: 0.5rem 1rem;
+  }
+}
+
+/* Responsive: Mobile */
+@media (max-width: 480px) {
+  h1 {
+    font-size: 1.75rem;
+  }
+  .buttons button {
+    width: 30vw;
+    max-width: 80px;
+    border-width: 2px;
+  }
+  #Result {
+    font-size: 1rem;
+    padding: 0.4rem 0.8rem;
+  }
+  #result {
+    font-size: 0.8rem;
+    padding: 0.5rem;
+  }
+  .Scorecard h2 {
+    font-size: 1rem;
+    padding: 0.4rem 0.8rem;
+  }
+  #Final,
+  .bottom button {
+    font-size: 0.8rem;
+    padding: 0.4rem 0.75rem;
+  }
+}
+
   </style>
 </head>
 <body>
-  <h1 style="color: white;">Rock Paper Scissors</h1>
+  <h1>Rock Paper Scissors</h1>
   <div class="buttons">
   <button class="rock" onclick="option('rock');console.log('rock');">
     <img src="rock-emoji.png" alt="Rock">
@@ -72,23 +209,8 @@
     <img src="scissors-emoji.png" alt="Scissors">
   </button> 
   </div>
-  <h2 id="Result" style="display: inline;font-size: 20px;color: white;background-color: black;padding: 10px;"></h2>
-  <div id="result"
-    style=
-    "
-    display: flex;
-    width: 400px;
-    background-color:black;
-    font-size:20px;
-    color:white;
-    padding:12px;
-    margin-top:50px;
-    margin-bottom:50px;
-    align-items: center;
-    justify-content: space-between;
-    white-space: nowrap;
-    
-    ">
+  <h2 id="Result"></h2>
+  <div id="result">
     <!-- Your Choice:
     <img src="scissors-emoji.png" alt="Scissors">
    Computer Choice:
@@ -99,20 +221,12 @@
     <h2 id="computer-score">Computer Score: 0</h2>
     <h2 id="draw-score">Draws: 0</h2>
   </div>
-  <div id="Final" onclick="last();"
-  style=
-  "padding:10px;
-  color: white;
-  cursor: pointer;
-  margin-top:30px;
-  margin-bottom: 30px;">
+  <div id="Final" onclick="last();">
   Final Result
   </div>
   <div class="bottom">
-    <button onclick="Reset();"
-    style="font-family: Roboto,Arial;font-size: 20px; cursor:pointer;">RESET</button>
-    <button onclick="autoPlay();" id="auto"
-    style="font-family: Roboto,Arial;font-size: 20px; cursor:pointer;">Auto Play</button>
+    <button onclick="Reset();">RESET</button>
+    <button onclick="autoPlay();" id="auto">Auto Play</button>
   </div>
 
 <script>
@@ -212,8 +326,8 @@
       }
     }
     showResult(select,result);
-    document.getElementById('Final').style.backgroundColor = "black";
-    document.getElementById('Final').style.color = "white";
+    document.getElementById('Final').backgroundColor = "black";
+    document.getElementById('Final').color = "white";
     document.getElementById('Final').innerHTML = "Final Result";
   }
   function showResult(select,result)
@@ -240,26 +354,26 @@
       document.getElementById('draw-score').innerHTML=`Draws: ${scoreCard.draw}`;
       localStorage.setItem('scoreCard', JSON.stringify(scoreCard));
     }
-    document.getElementById('result').innerHTML = `Your Choice: <img src="${select}-emoji.png" alt="Scissors"><span style="magin-left:10px;">Computer Choice:</span> <img src="${selection}-emoji.png" alt="Scissors">`
+    document.getElementById('result').innerHTML = `Your Choice: <img src="${select}-emoji.png" alt="Scissors"><span="magin-left:10px;">Computer Choice:</span> <img src="${selection}-emoji.png" alt="Scissors">`
   }
   function last()
   {
     if(scoreCard.win>scoreCard.loss)
     {
-      document.getElementById('Final').style.backgroundColor = "green";
-      document.getElementById('Final').style.color = "white";
+      document.getElementById('Final').backgroundColor = "green";
+      document.getElementById('Final').color = "white";
       document.getElementById('Final').innerHTML = "You won the game!";
     }
     else if(scoreCard.loss>scoreCard.win)
     {
-      document.getElementById('Final').style.backgroundColor = "red";
-      document.getElementById('Final').style.color = "white";
+      document.getElementById('Final').backgroundColor = "red";
+      document.getElementById('Final').color = "white";
       document.getElementById('Final').innerHTML = "You lost the game!";
     }
     else
     {
-      document.getElementById('Final').style.backgroundColor = "yellow";
-      document.getElementById('Final').style.color = "black";
+      document.getElementById('Final').backgroundColor = "yellow";
+      document.getElementById('Final').color = "black";
       document.getElementById('Final').innerHTML = "It's a tie!";
     }
   }
@@ -269,8 +383,8 @@
     document.getElementById('your-score').innerHTML=`Your Score: ${scoreCard.win}`;
     document.getElementById('computer-score').innerHTML=`Computer Score: ${scoreCard.loss}`;
     document.getElementById('draw-score').innerHTML=`Draws: ${scoreCard.draw}`;
-    document.getElementById('Final').style.backgroundColor = "black";
-    document.getElementById('Final').style.color = "white";
+    document.getElementById('Final').backgroundColor = "black";
+    document.getElementById('Final').color = "white";
     document.getElementById('Final').innerHTML = "Final Result";
     document.getElementById('result').innerHTML = ``;
     document.getElementById('Result').innerHTML = "";
