@@ -360,20 +360,20 @@ button {
   {
     if(scoreCard.win>scoreCard.loss)
     {
-      document.getElementById('Final').backgroundColor = "green";
-      document.getElementById('Final').color = "white";
+      document.getElementById('Final').style.backgroundColor = "green";
+      document.getElementById('Final').style.color = "white";
       document.getElementById('Final').innerHTML = "You won the game!";
     }
     else if(scoreCard.loss>scoreCard.win)
     {
-      document.getElementById('Final').backgroundColor = "red";
-      document.getElementById('Final').color = "white";
+      document.getElementById('Final').style.backgroundColor = "red";
+      document.getElementById('Final').style.color = "white";
       document.getElementById('Final').innerHTML = "You lost the game!";
     }
     else
     {
-      document.getElementById('Final').backgroundColor = "yellow";
-      document.getElementById('Final').color = "black";
+      document.getElementById('Final').style.backgroundColor = "yellow";
+      document.getElementById('Final').style.color = "black";
       document.getElementById('Final').innerHTML = "It's a tie!";
     }
   }
