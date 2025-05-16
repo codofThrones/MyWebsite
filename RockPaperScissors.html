@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <title>Rock Paper Scissors</title>
+  <style>
+    body
+    {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background-color: black;
+      font-family: Roboto;
+      font-weight: 500;
+      font-size: 20px;
+    }
+    button
+    {
+      padding: 10px;
+      color: white;
+      background-color: black;
+      font-size: 12px;
+      border: none;
+    }
+    .Scorecard h2
+    {
+      display: inline;
+      font-size: 20px;
+      color: white;
+      background-color: black;
+      padding: 10px;
+    }
+    img
+    {
+      width: 100%;
+    }
+    .buttons button
+    {
+      width: 120px;
+      height: 120px;
+      border: 3px solid white;
+      padding: 20px;
+      border-radius: 60px;
+      margin-right: 20px;
+      cursor: pointer;
+
+    }
+    #result img
+    {
+      width: 40px;
+    }
+  </style>
+</head>
+<body>
+  <h1 style="color: white;">Rock Paper Scissors</h1>
+  <div class="buttons">
+  <button class="rock" onclick="computerSelection();option('rock');console.log('rock');">
+    <img src="rock-emoji.png" alt="Rock">
+  </button>
+  <button class="paper" onclick="computerSelection();option('paper');console.log('paper');">
+    <img src="paper-emoji.png" alt="Paper">
+  </button>
+  <button class="scissors" onclick="computerSelection();option('scissors');console.log('scissors');">
+    <img src="scissors-emoji.png" alt="Scissors">
+  </button> 
+  </div>
+  <h2 id="Result" style="display: inline;font-size: 20px;color: white;background-color: black;padding: 10px;"></h2>
+  <div id="result"
+    style=
+    "
+    display: flex;
+    width: 400px;
+    background-color:black;
+    font-size:20px;
+    color:white;
+    padding:12px;
+    margin-top:50px;
+    margin-bottom:50px;
+    align-items: center;
+    justify-content: space-between;
+    white-space: nowrap;
+    
+    ">
+    <!-- Your Choice:
+    <img src="scissors-emoji.png" alt="Scissors">
+   Computer Choice:
+    <img src="scissors-emoji.png" alt="Scissors"> -->
+</div>
+  <div class="Scorecard">
+    <h2 id="your-score">Your Score: 0</h2>
+    <h2 id="computer-score">Computer Score: 0</h2>
+    <h2 id="draw-score">Draws: 0</h2>
+  </div>
+  <div id="Final" onclick="last();"
+  style=
+  "padding:10px;
+  color: white;
+  cursor: pointer;
+  margin-top:30px;
+  margin-bottom: 30px;">
+  Final Result
+  </div>
+  <button onclick="Reset();"
+  style="font-family: Roboto,Arial;font-size: 20px; cursor:pointer;">RESET</button>
+<script>
+  let selection = "",result="";
+  let scoreCard=JSON.parse(localStorage.getItem("scoreCard"))||{win:0,loss:0,draw:0};
+
+  document.getElementById('your-score').innerHTML=`Your Score: ${scoreCard.win}`;
+  document.getElementById('draw-score').innerHTML=`Draws: ${scoreCard.draw}`;
+  document.getElementById('computer-score').innerHTML=`Computer Score: ${scoreCard.loss}`;
+
+  function computerSelection()
+    {
+      const randomNumber = Math.random();
+      if(randomNumber<=1/3)
+      {
+        selection = "rock";
+      }
+      else if(randomNumber<=2/3 && randomNumber>1/3)
+      {
+        selection = "paper";
+      }
+      else
+      {
+        selection = "scissors";
+      }
+    }
+  function option(select)
+  {
+    if(select=="rock")
+    {
+      if(selection=="scissors")
+      {
+        result="win";
+      }
+      else if(selection=="paper")
+      {
+        result="lost";
+        
+      }
+      else if(selection=="rock")
+      {
+        result="draw";
+      }
+      
+    }
+    else if(select=="paper") 
+    {
+      if(selection=="rock")
+      {
+        result="win";
+      }
+      else if(selection=="scissors")
+      {
+        result="lost";
+        
+      }
+      else if(selection=="paper")
+      {
+        result="draw";
+      }
+    }
+    else if(select=="scissors")
+    {
+      if(selection=="paper")
+      {
+        result="win";
+      }
+      else if(selection=="rock")
+      {
+        result="lost";
+        
+      }
+      else if(selection=="scissors")
+      {
+        result="draw";
+      }
+    }
+    showResult(select,result);
+    document.getElementById('Final').style.backgroundColor = "black";
+    document.getElementById('Final').style.color = "white";
+    document.getElementById('Final').innerHTML = "Final Result";
+  }
+  function showResult(select,result)
+  {
+    if(result==="win")
+    {
+      document.getElementById('Result').innerHTML = "You Win!";
+      scoreCard.win++;
+      document.getElementById('your-score').innerHTML=`Your Score: ${scoreCard.win}`;
+      localStorage.setItem('scoreCard', JSON.stringify(scoreCard));
+      
+    }
+    else if(result==="lost")
+    {
+      document.getElementById('Result').innerHTML = "You lose!";
+      scoreCard.loss++;
+      document.getElementById('computer-score').innerHTML=`Computer Score: ${scoreCard.loss}`;
+      localStorage.setItem('scoreCard', JSON.stringify(scoreCard));
+    }
+    else if(result==="draw")
+    {
+      document.getElementById('Result').innerHTML = "It's a tie!";
+      scoreCard.draw++;
+      document.getElementById('draw-score').innerHTML=`Draws: ${scoreCard.draw}`;
+      localStorage.setItem('scoreCard', JSON.stringify(scoreCard));
+    }
+    document.getElementById('result').innerHTML = `Your Choice: <img src="${select}-emoji.png" alt="Scissors"><span style="magin-left:10px;">Computer Choice:</span> <img src="${selection}-emoji.png" alt="Scissors">`
+  }
+  function last()
+  {
+    if(scoreCard.win>scoreCard.loss)
+    {
+      document.getElementById('Final').style.backgroundColor = "green";
+      document.getElementById('Final').style.color = "white";
+      document.getElementById('Final').innerHTML = "You won the game!";
+    }
+    else if(scoreCard.loss>scoreCard.win)
+    {
+      document.getElementById('Final').style.backgroundColor = "red";
+      document.getElementById('Final').style.color = "white";
+      document.getElementById('Final').innerHTML = "You lost the game!";
+    }
+    else
+    {
+      document.getElementById('Final').style.backgroundColor = "yellow";
+      document.getElementById('Final').style.color = "black";
+      document.getElementById('Final').innerHTML = "It's a tie!";
+    }
+  }
+  function Reset()
+  {
+    scoreCard.win=0,scoreCard.loss=0,scoreCard.draw=0;
+    document.getElementById('your-score').innerHTML=`Your Score: ${scoreCard.win}`;
+    document.getElementById('computer-score').innerHTML=`Computer Score: ${scoreCard.loss}`;
+    document.getElementById('draw-score').innerHTML=`Draws: ${scoreCard.draw}`;
+    document.getElementById('Final').style.backgroundColor = "black";
+    document.getElementById('Final').style.color = "white";
+    document.getElementById('Final').innerHTML = "Final Result";
+    document.getElementById('result').innerHTML = ``;
+    document.getElementById('Result').innerHTML = "";
+    localStorage.removeItem('scoreCard');
+  }
+  alert("Enjoy Rock Paper Scissors!\nPlease select an option by clicking on the image.\nPlease click on Final result to get Final Result\nClick on Reset to reset the scores");
+  document.body.classList.toggle("light-theme");
+  localStorage.setItem('scoreCard', JSON.stringify(scoreCard));
+  </script>
+</body>
+</html>
+<!-- const buttons = document.querySelectorAll('.rock,.paper,.scissors');
+const computerChoice = ['rock', 'paper','scissors'];
+let userScore = 0;
+  let computerScore = 0;
+
+buttons.forEach(button => {
+  button.addEventListener('click', function() {
+    const userChoice = this.className;
+    const computerIndex = Math.floor(Math.random() * computerChoice.length);
+    const computerChoice = computerChoice[computerIndex];
+    
+    let result = determineWinner(userChoice, computerChoice);
+    
+    displayResult(userChoice, computerChoice, result);
+  });
+});
+
+function determineWinner(userChoice, computerChoice) {
+  if (userChoice === computerChoice) {
+    return 'It\'s a tie!';
+  } else if ((userChoice === 'rock' && computerChoice === 'scissors') ||
+             (userChoice === 'paper' && computerChoice === 'rock') ||
+             (userChoice ==='scissors' && computerChoice === 'paper')) {
+    return 'You win!';
+  } else {
+    return 'Computer wins!';
+  }
+}
+
+function displayResult(userChoice, computerChoice, result) {
+  const resultElement = document.getElementById('result');
+  resultElement.textContent = `You chose ${userChoice}, computer chose ${computerChoice}. ${result}`;
+  
+  if (result === 'You win!') {
+    userScore++;
+  } else if (result === 'Computer wins!') {
+    computerScore++;
+  }
+  
+  const userScoreElement = document.getElementById('user-score');
+  userScoreElement.textContent = userScore;
+  
+  const computerScoreElement = document.getElementById('computer-score');
+  computerScoreElement.textContent = computerScore;
+}
+// Reset scores
+document.getElementById('reset-button').addEventListener('click', function() {
+  userScore = 0;
+  computerScore = 0;
+  
+  const userScoreElement = document.getElementById('user-score');
+  userScoreElement.textContent = userScore;
+  
+  const computerScoreElement = document.getElementById('computer-score');
+  computerScoreElement.textContent = computerScore;
+  
+  const resultElement = document.getElementById('result');
+  resultElement.textContent = '';
+});
+// Disable buttons when game is over
+const gameOver = document.getElementById('game-over');
+buttons.forEach(button => {
+  button.disabled = true;
+});
+
+setTimeout(() => {
+  buttons.forEach(button => {
+    button.disabled = false;
+  });
+  gameOver.style.display = 'block';
+}, 3000);
+// Show game over message
+setTimeout(() => {
+  const gameOverMessage = document.getElementById('game-over-message');
+  gameOverMessage.textContent = `Game over! User score: ${userScore}, Computer score: ${computerScore}`;
+  gameOver.style.display = 'none';
+}, 3500);
+// Show game rules
+setTimeout(() => {
+  const gameRules = document.getElementById('game-rules');
+  gameRules.style.display = 'block';
+}, 4000);
+// Hide game rules message
+setTimeout(() => {
+  const gameRulesMessage = document.getElementById('game-rules-message');
+  gameRulesMessage.style.display = 'none';
+}, 4500);
+// Show game instructions
+setTimeout(() => {
+  const gameInstructions = document.getElementById('game-instructions');
+  gameInstructions.style.display = 'block';
+}, 5000);
+// Hide game instructions message
+setTimeout(() => {
+  const gameInstructionsMessage = document.getElementById('game-instructions-message');
+  gameInstructionsMessage.style.display = 'none';
+}, 5500);
+// Show game credits
+setTimeout(() => {
+  const gameCredits = document.getElementById('game-credits');
+  gameCredits.style.display = 'block';
+}, 6000);
+// Hide game credits message
+setTimeout(() => {
+  const gameCreditsMessage = document.getElementById('game-credits-message');
+  gameCreditsMessage.style.display = 'none';
+}, 6500);
+// Close game credits
+document.getElementById('close-credits').addEventListener('click', function() {
+  gameCredits.style.display = 'none';
+});
+// Close game instructions
+document.getElementById('close-instructions').addEventListener('click', function() {
+  gameInstructions.style.display = 'none';
+});
+// Close game rules
+document.getElementById('close-rules').addEventListener('click', function() {
+  gameRules.style.display = 'none';
+});
+// Close game over message
+document.getElementById('close-game-over').addEventListener('click', function() {
+  gameOver.style.display = 'none';
+});
+// Close game credits message
+document.getElementById('close-game-credits').addEventListener('click', function() {
+  gameCredits.style.display = 'none';
+}); -->
