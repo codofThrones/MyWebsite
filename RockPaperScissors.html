@@ -54,18 +54,21 @@
     {
       width: 40px;
     }
+    .bottom button{
+      background-color: rgb(136, 135, 135);
+    }
   </style>
 </head>
 <body>
   <h1 style="color: white;">Rock Paper Scissors</h1>
   <div class="buttons">
-  <button class="rock" onclick="computerSelection();option('rock');console.log('rock');">
+  <button class="rock" onclick="option('rock');console.log('rock');">
     <img src="rock-emoji.png" alt="Rock">
   </button>
-  <button class="paper" onclick="computerSelection();option('paper');console.log('paper');">
+  <button class="paper" onclick="option('paper');console.log('paper');">
     <img src="paper-emoji.png" alt="Paper">
   </button>
-  <button class="scissors" onclick="computerSelection();option('scissors');console.log('scissors');">
+  <button class="scissors" onclick="option('scissors');console.log('scissors');">
     <img src="scissors-emoji.png" alt="Scissors">
   </button> 
   </div>
@@ -105,34 +108,60 @@
   margin-bottom: 30px;">
   Final Result
   </div>
-  <button onclick="Reset();"
-  style="font-family: Roboto,Arial;font-size: 20px; cursor:pointer;">RESET</button>
+  <div class="bottom">
+    <button onclick="Reset();"
+    style="font-family: Roboto,Arial;font-size: 20px; cursor:pointer;">RESET</button>
+    <button onclick="autoPlay();" id="auto"
+    style="font-family: Roboto,Arial;font-size: 20px; cursor:pointer;">Auto Play</button>
+  </div>
+
 <script>
   let selection = "",result="";
+  let intervalId;
+  let isAutoPlaying=false;
   let scoreCard=JSON.parse(localStorage.getItem("scoreCard"))||{win:0,loss:0,draw:0};
 
   document.getElementById('your-score').innerHTML=`Your Score: ${scoreCard.win}`;
   document.getElementById('draw-score').innerHTML=`Draws: ${scoreCard.draw}`;
   document.getElementById('computer-score').innerHTML=`Computer Score: ${scoreCard.loss}`;
+  function autoPlay()
+  {
+    if(!isAutoPlaying)
+  {
+    intervalId= setInterval(()=>{
+      const myOption=computerSelection();
+      option(myOption);
+    },1000);
+    isAutoPlaying=true;
+    document.getElementById("auto").innerHTML='Stop';
+  }
+  else
+  {
+    clearInterval(intervalId);
+    isAutoPlaying=false;
+    document.getElementById("auto").innerHTML='Auto Play';
+  }
+  }
 
   function computerSelection()
     {
       const randomNumber = Math.random();
       if(randomNumber<=1/3)
       {
-        selection = "rock";
+        return "rock";
       }
       else if(randomNumber<=2/3 && randomNumber>1/3)
       {
-        selection = "paper";
+        return "paper";
       }
       else
       {
-        selection = "scissors";
+        return "scissors";
       }
     }
   function option(select)
   {
+    selection = computerSelection();
     if(select=="rock")
     {
       if(selection=="scissors")
@@ -248,135 +277,38 @@
     localStorage.removeItem('scoreCard');
   }
   alert("Enjoy Rock Paper Scissors!\nPlease select an option by clicking on the image.\nPlease click on Final result to get Final Result\nClick on Reset to reset the scores");
+  alert("Press r for Rock\np for Paper.\ns for Scissors\nPress Escape for Reset\nPress Enter for Auto Play\nPress Space to stop Auto Play");
   document.body.classList.toggle("light-theme");
+
+  document.body.addEventListener('keydown',(event)=>
+{
+  if (event.key=='r')
+  {
+    option('rock');
+  }
+  if (event.key=='p')
+  {
+    option('paper');
+  }
+  if (event.key=='s')
+  {
+    option('scissors');
+  }
+  if (event.key=='Enter')
+  {
+    autoPlay();
+  }
+  if (event.key==' ')
+  {
+    autoPlay();
+  }
+  if (event.key=='Escape')
+  {
+    Reset();
+  }
+
+})
   localStorage.setItem('scoreCard', JSON.stringify(scoreCard));
   </script>
 </body>
 </html>
-<!-- const buttons = document.querySelectorAll('.rock,.paper,.scissors');
-const computerChoice = ['rock', 'paper','scissors'];
-let userScore = 0;
-  let computerScore = 0;
-
-buttons.forEach(button => {
-  button.addEventListener('click', function() {
-    const userChoice = this.className;
-    const computerIndex = Math.floor(Math.random() * computerChoice.length);
-    const computerChoice = computerChoice[computerIndex];
-    
-    let result = determineWinner(userChoice, computerChoice);
-    
-    displayResult(userChoice, computerChoice, result);
-  });
-});
-
-function determineWinner(userChoice, computerChoice) {
-  if (userChoice === computerChoice) {
-    return 'It\'s a tie!';
-  } else if ((userChoice === 'rock' && computerChoice === 'scissors') ||
-             (userChoice === 'paper' && computerChoice === 'rock') ||
-             (userChoice ==='scissors' && computerChoice === 'paper')) {
-    return 'You win!';
-  } else {
-    return 'Computer wins!';
-  }
-}
-
-function displayResult(userChoice, computerChoice, result) {
-  const resultElement = document.getElementById('result');
-  resultElement.textContent = `You chose ${userChoice}, computer chose ${computerChoice}. ${result}`;
-  
-  if (result === 'You win!') {
-    userScore++;
-  } else if (result === 'Computer wins!') {
-    computerScore++;
-  }
-  
-  const userScoreElement = document.getElementById('user-score');
-  userScoreElement.textContent = userScore;
-  
-  const computerScoreElement = document.getElementById('computer-score');
-  computerScoreElement.textContent = computerScore;
-}
-// Reset scores
-document.getElementById('reset-button').addEventListener('click', function() {
-  userScore = 0;
-  computerScore = 0;
-  
-  const userScoreElement = document.getElementById('user-score');
-  userScoreElement.textContent = userScore;
-  
-  const computerScoreElement = document.getElementById('computer-score');
-  computerScoreElement.textContent = computerScore;
-  
-  const resultElement = document.getElementById('result');
-  resultElement.textContent = '';
-});
-// Disable buttons when game is over
-const gameOver = document.getElementById('game-over');
-buttons.forEach(button => {
-  button.disabled = true;
-});
-
-setTimeout(() => {
-  buttons.forEach(button => {
-    button.disabled = false;
-  });
-  gameOver.style.display = 'block';
-}, 3000);
-// Show game over message
-setTimeout(() => {
-  const gameOverMessage = document.getElementById('game-over-message');
-  gameOverMessage.textContent = `Game over! User score: ${userScore}, Computer score: ${computerScore}`;
-  gameOver.style.display = 'none';
-}, 3500);
-// Show game rules
-setTimeout(() => {
-  const gameRules = document.getElementById('game-rules');
-  gameRules.style.display = 'block';
-}, 4000);
-// Hide game rules message
-setTimeout(() => {
-  const gameRulesMessage = document.getElementById('game-rules-message');
-  gameRulesMessage.style.display = 'none';
-}, 4500);
-// Show game instructions
-setTimeout(() => {
-  const gameInstructions = document.getElementById('game-instructions');
-  gameInstructions.style.display = 'block';
-}, 5000);
-// Hide game instructions message
-setTimeout(() => {
-  const gameInstructionsMessage = document.getElementById('game-instructions-message');
-  gameInstructionsMessage.style.display = 'none';
-}, 5500);
-// Show game credits
-setTimeout(() => {
-  const gameCredits = document.getElementById('game-credits');
-  gameCredits.style.display = 'block';
-}, 6000);
-// Hide game credits message
-setTimeout(() => {
-  const gameCreditsMessage = document.getElementById('game-credits-message');
-  gameCreditsMessage.style.display = 'none';
-}, 6500);
-// Close game credits
-document.getElementById('close-credits').addEventListener('click', function() {
-  gameCredits.style.display = 'none';
-});
-// Close game instructions
-document.getElementById('close-instructions').addEventListener('click', function() {
-  gameInstructions.style.display = 'none';
-});
-// Close game rules
-document.getElementById('close-rules').addEventListener('click', function() {
-  gameRules.style.display = 'none';
-});
-// Close game over message
-document.getElementById('close-game-over').addEventListener('click', function() {
-  gameOver.style.display = 'none';
-});
-// Close game credits message
-document.getElementById('close-game-credits').addEventListener('click', function() {
-  gameCredits.style.display = 'none';
-}); -->
